@@ -1,4 +1,4 @@
-/* Linker file for GNU C Compiler */
+/* Linker file for GNU C Compiler SKEAZ128xxx4_flash */
 
 /* Entry Point */
 ENTRY(Reset_Handler)
