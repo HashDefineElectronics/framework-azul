@@ -19,7 +19,7 @@
 MEMORY
 {
   /* Define each memory region */
-  PROGRAM_FLASH (rx) : ORIGIN = 0x2000, LENGTH = 0x1E000 /* 8K (out of 128K) bytes (alias Flash) */  
+  PROGRAM_FLASH (rx) : ORIGIN = 0x2000, LENGTH = 0x1E000 /* 120K (out of 128K) bytes (alias Flash) */  
   SRAM_UPPER (rwx) : ORIGIN = 0x20000000, LENGTH = 0xc000 /* 48K bytes (alias RAM) */  
   SRAM_LOWER (rwx) : ORIGIN = 0x1fffc000, LENGTH = 0x4000 /* 16K bytes (alias RAM2) */  
 }
