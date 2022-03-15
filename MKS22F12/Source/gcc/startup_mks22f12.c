@@ -67,6 +67,13 @@ extern "C" {
 extern "C" {
 #endif
 
+
+#ifdef CONFIG_DISABLE_NMI_PIN
+    #define FALSH_WORD_FOUR_VALUE 0xFFFFFBFE
+#else
+    #define FALSH_WORD_FOUR_VALUE 0xFFFFFFFE
+#endif
+
 //*****************************************************************************
 // Flash Configuration block : 16-byte flash configuration field that stores
 // default protection settings (loaded on reset) and security information that
@@ -78,7 +85,7 @@ __attribute__ ((used,section(".FlashConfig"))) const struct {
     unsigned int word2;
     unsigned int word3;
     unsigned int word4;
-} Flash_Config = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFE};
+} Flash_Config = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, FALSH_WORD_FOUR_VALUE};
 //*****************************************************************************
 // Declaration of external SystemInit function
 //*****************************************************************************
