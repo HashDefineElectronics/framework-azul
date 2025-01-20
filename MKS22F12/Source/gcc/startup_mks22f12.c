@@ -93,12 +93,14 @@ __attribute__ ((used,section(".FlashConfig"))) const struct {
 extern void SystemInit(void);
 #endif // (__USE_CMSIS)
 
+
+
 //*****************************************************************************
 // Forward declaration of the core exception handlers.
 // When the application defines a handler (with the same name), this will
 // automatically take precedence over these weak definitions
 //*****************************************************************************
-     void ResetISR(void);
+void ResetISR(void);
 WEAK void NMI_Handler(void);
 WEAK void HardFault_Handler(void);
 WEAK void MemManage_Handler(void);
@@ -109,6 +111,11 @@ WEAK void DebugMon_Handler(void);
 WEAK void PendSV_Handler(void);
 WEAK void SysTick_Handler(void);
 WEAK void IntDefaultHandler(void);
+
+//*****************************************************************************
+// Declaration of external SystemWDOGInit function
+//*****************************************************************************
+WEAK void SystemWDOGInit(void);
 
 //*****************************************************************************
 // Forward declaration of the application IRQ handlers. When the application
@@ -496,6 +503,7 @@ extern unsigned int __data_section_table_end;
 extern unsigned int __bss_section_table;
 extern unsigned int __bss_section_table_end;
 
+
 //*****************************************************************************
 // Reset entry point for your code.
 // Sets up a simple runtime environment and initializes the C/C++
@@ -512,13 +520,9 @@ void ResetISR(void) {
     SystemInit();
 
 #else
-    // Disable Watchdog
-    //  Write 0xC520 to watchdog unlock register
-    *((volatile unsigned short *)0x4005200E) = 0xC520;
-    //  Followed by 0xD928 to complete the unlock
-    *((volatile unsigned short *)0x4005200E) = 0xD928;
-    // Now disable watchdog via STCTRLH register
-    *((volatile unsigned short *)0x40052000) = 0x01D2u;
+
+    SystemWDOGInit();
+
 #endif // (__USE_CMSIS)
 
     //
@@ -1056,6 +1060,17 @@ WEAK void CAN1_Rx_Warning_IRQHandler(void)
 
 WEAK void CAN1_Wake_Up_IRQHandler(void)
 {   CAN1_DriverIRQHandler();
+}
+
+
+WEAK void SystemWDOGInit(void) {
+    // Disable Watchdog
+    //  Write 0xC520 to watchdog unlock register
+    *((volatile unsigned short *)0x4005200E) = 0xC520;
+    //  Followed by 0xD928 to complete the unlock
+    *((volatile unsigned short *)0x4005200E) = 0xD928;
+    // Now disable watchdog via STCTRLH register
+    *((volatile unsigned short *)0x40052000) = 0x01D2u;
 }
 
 //*****************************************************************************
